@@ -1,36 +1,28 @@
-
-// sniff.js - Updated for universal contract support via Axiom API
-
 async function sniff() {
   const address = document.getElementById("contractInput").value.trim();
   const panel = document.getElementById("resultPanel");
-
-  panel.innerHTML = "🔍 Sniffing... Please wait...";
-
-  if (!address || address.length < 20) {
-    panel.innerHTML = "❌ Invalid contract address.";
-    return;
-  }
+  panel.innerHTML = "🔍 Sniffing... Please wait.";
 
   try {
-    const response = await fetch(`https://api.axiom.com/v1/contracts/${address}`);
+    const response = await fetch(https://api.dexscreener.io/latest/dex/pairs/solana/${address});
     const data = await response.json();
 
-    if (!data || !data.name || !data.liquidity_usd) {
-      panel.innerHTML = "❌ No relevant data found for this contract.";
+    if (!data.pairs || data.pairs.length === 0) {
+      panel.innerHTML = "❌ Could not retrieve data. Try another address.";
       return;
     }
 
+    const info = data.pairs[0];
+
     panel.innerHTML = `
-      ✅ <strong>Name:</strong> ${data.name}<br>
-      🔗 <strong>Contract:</strong> ${address}<br>
-      💧 <strong>Liquidity (USD):</strong> $${data.liquidity_usd}<br>
-      💰 <strong>Price:</strong> $${data.price_usd}<br>
-      📈 <strong>Volume 24h:</strong> $${data.volume_24h}<br>
-      🛡️ <strong>Honeypot:</strong> ${data.honeypot ? "⚠️ Yes" : "✅ No"}<br>
+      ✅ <strong>Name:</strong> ${info.baseToken.name}<br>
+      🔗 <strong>Pair Address:</strong> ${info.pairAddress}<br>
+      💧 <strong>Liquidity (USD):</strong> $${info.liquidity.usd}<br>
+      💰 <strong>Price:</strong> $${info.priceUsd}<br>
+      📈 <strong>Volume 24h:</strong> $${info.volume.h24}<br>
     `;
-  } catch (error) {
-    console.error(error);
-    panel.innerHTML = "❌ Error fetching data from Axiom API.";
+  } catch (err) {
+    panel.innerHTML = "❌ Error fetching data.";
+    console.error(err);
   }
 }
