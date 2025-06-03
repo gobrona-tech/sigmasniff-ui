@@ -1,7 +1,7 @@
 async function sniff() {
   const address = document.getElementById("contractInput").value.trim();
   const panel = document.getElementById("resultPanel");
-  panel.innerHTML = "🔍 Sniffing... Please wait.";
+  panel.innerHTML = "🔍 Sniffing... Please wait...";
 
   try {
     const response = await fetch(https://api.dexscreener.io/latest/dex/pairs/solana/${address});
