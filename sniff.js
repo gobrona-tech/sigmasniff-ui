@@ -4,7 +4,7 @@ async function sniff() {
   panel.innerHTML = "🔍 Sniffing... Please wait...";
 
   try {
-    const response = await fetch('https://api.dexscreener.io/latest/dex/pairs/solana/${address}');
+    const response = await fetch(`https://api.dexscreener.io/latest/dex/pairs/solana/${address}`);
     const data = await response.json();
 
     if (!data.pairs || data.pairs.length === 0) {
